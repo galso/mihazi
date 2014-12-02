@@ -1,5 +1,6 @@
 package mihazi;
 
+//Utility class for static utility methods
 public class Util {
 
 	public static Direction getPrevDir(Direction dir){

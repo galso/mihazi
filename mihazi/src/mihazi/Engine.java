@@ -2,6 +2,8 @@ package mihazi;
 
 import java.util.Random;
 
+//The engine of the simulation
+//This runs the episodes
 public class Engine {
 
 	private Field field;
@@ -11,6 +13,7 @@ public class Engine {
 		field = _field;
 	}
 	
+	//make a single step for the agent
 	private PosAndRew step(Position pos, Direction dir){
 		
 		//TODO remove, just for test

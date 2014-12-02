@@ -1,5 +1,6 @@
 package mihazi;
 
+//encapsulate return values (position and reward)
 public class PosAndRew {
 
 	private Position pos;

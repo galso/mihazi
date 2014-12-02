@@ -1,5 +1,6 @@
 package mihazi;
 
+//represent the simulation field
 public class Field {
 
 	private Grid[][] field;
@@ -9,6 +10,7 @@ public class Field {
 		init();
 	}
 	
+	//reads the visualized field from the Constants.field attribute
 	private void init(){
 		
 		for(int i = 0; i < Constants.rows; i++){
@@ -38,6 +40,7 @@ public class Field {
 		}
 	}
 	
+	//gives back the next position from the given position and direction
 	public Position getNewPos(Position pos, Direction dir){
 		
 		Position retPos = retPos = new Position(pos.getX(), pos.getY());;
@@ -65,7 +68,7 @@ public class Field {
 		return retPos;
 	}
 	
-	
+	//gives back the reward on the given position
 	public int getReward(Position pos){
 		return field[pos.getX()][pos.getY()].getReward();
 	}

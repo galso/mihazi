@@ -1,5 +1,6 @@
 package mihazi;
 
+//represent a grid on the field
 public class Grid {
 
 	private boolean available;

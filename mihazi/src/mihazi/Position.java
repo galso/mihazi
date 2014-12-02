@@ -1,5 +1,6 @@
 package mihazi;
 
+//represent az X,Y coordination
 public class Position {
 
 	private int posX;
