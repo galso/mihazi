@@ -1,6 +1,11 @@
 package mihazi;
 
-public class Agent {
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
+public class Agent{
 
 	private int reward;
 	private Direction direction;
@@ -42,5 +47,17 @@ public class Agent {
 	
 	public void setDirection(Direction _direction){
 		direction = _direction;
+	}
+	
+	public void resetAgent(){
+		reward = 0;
+		pos = new Position(Constants.startX, Constants.startY);
+		goalReached = false;
+	}
+	
+	public void draw(Graphics g){
+		System.out.println("agent paint");
+		g.setColor(Color.BLUE);
+		g.fillOval(pos.getX()*Constants.gridSize+Constants.sceneXOffset, pos.getY()*Constants.gridSize+Constants.sceneYOffset, Constants.gridSize, Constants.gridSize);
 	}
 }

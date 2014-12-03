@@ -8,8 +8,12 @@ public class Main {
 			Field field = new Field();
 			Engine engine = new Engine(field);
 			
+			
+			Frame frame = new Frame(engine);
+			engine.setFrame(frame);
+			
 			//start the simulation
-			engine.startEpisodes();
+//			engine.startEpisodes();
 	}
 	
 }

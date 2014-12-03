@@ -4,10 +4,10 @@ package mihazi;
 public class Constants {
 
 	//number of episodes
-	public static int episodes = 100;
+	public static int episodes = 2;
 	
 	//max steps per episode
-	public static int maxSteps = 1000;
+	public static int maxSteps = 10;
 	
 	//agent start position
 	public static int startX = 1;
@@ -40,4 +40,8 @@ public class Constants {
 		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	};
+	
+	public static int gridSize = 30;
+	public static int sceneXOffset = 50;
+	public static int sceneYOffset = 75;
 }

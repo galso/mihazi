@@ -1,5 +1,7 @@
 package mihazi;
 
+import java.awt.Graphics;
+
 //represent the simulation field
 public class Field {
 
@@ -71,5 +73,13 @@ public class Field {
 	//gives back the reward on the given position
 	public int getReward(Position pos){
 		return field[pos.getX()][pos.getY()].getReward();
+	}
+	
+	public void draw(Graphics g){
+		for(int i = 0; i < Constants.rows; i++){
+			for(int j = 0; j < Constants.cols; j++){
+				field[i][j].drawObject(g,i*Constants.gridSize+Constants.sceneXOffset,j*Constants.gridSize+Constants.sceneYOffset);
+			}
+		}
 	}
 }
