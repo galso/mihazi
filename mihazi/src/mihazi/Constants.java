@@ -4,7 +4,7 @@ package mihazi;
 public class Constants {
 
 	//number of episodes
-	public static int episodes = 2;
+	public static int episodes = 3;
 	
 	//max steps per episode
 	public static int maxSteps = 10;
@@ -15,7 +15,7 @@ public class Constants {
 	
 	//rewards
 	public static int stepReward = -1;
-	public static int goalReward = 200;
+	public static int goalReward = 500;
 	public static int bombReward = -100;
 	
 	//probabilities for the steps

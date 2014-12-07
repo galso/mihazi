@@ -1,9 +1,12 @@
 package mihazi;
 
 import java.awt.Graphics;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.swing.JFrame;
 
 //The engine of the simulation
@@ -19,6 +22,7 @@ public class Engine {
 	private int episodeCount = 0;
 	private int steps = 0;
 	private int episodeReward = 0;
+	private Map<Integer, Integer> chartData;
 	
 	public Engine(Field _field){
 		field = _field;
@@ -69,7 +73,7 @@ public class Engine {
 		agent.resetAgent();
 		episodeCount = 0;
 		steps = 0;
-		episodeReward = 0;
+		chartData = new HashMap<Integer, Integer>(); 
 		
 		//visualize simulation
 		if(stepTime != 0){	
@@ -85,18 +89,21 @@ public class Engine {
 					agent.addReward(paw.getReward());
 					frame.setEpisodeReward(agent.getReward());
 					
+					//if episode is over
 					if(agent.finished() || steps >= Constants.maxSteps){
+						chartData.put(episodeCount, agent.getReward());
 						episodeCount++;
 						frame.setEpisodeCount(episodeCount);
 						steps = 0;
 						frame.setStepCount(steps);
-						episodeReward = 0;
 						frame.setEpisodeReward(agent.getReward());
 						agent.resetAgent();
 					}
+					//if simulation is over
 					if(episodeCount >= Constants.episodes){
 						timer.cancel();
 						timer = null;
+						drawChart(chartData);
 					}
 					
 				}
@@ -119,13 +126,22 @@ public class Engine {
 					//..
 					steps++;
 				}
-			
+				
+				chartData.put(episodeCount, agent.getReward());
+				agent.resetAgent();
+				
 				episodeCount++;
 			}
+			
+			drawChart(chartData);
 		}
-		
-		
-		
+
+	}
+	
+	private void drawChart(Map<Integer,Integer> map){
+		final LineChart demo = new LineChart("Learning curve", "Learning curve", map);
+		demo.pack();
+        demo.setVisible(true);
 	}
 
 	public Agent getAgent(){
