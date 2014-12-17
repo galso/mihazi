@@ -4,7 +4,7 @@ package utils;
 public class Constants {
 
 	//number of episodes
-	public static int episodes = 50;
+	public static int episodes = 100;
 	
 	//max steps per episode
 	public static int maxSteps = 1000;

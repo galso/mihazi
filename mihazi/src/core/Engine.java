@@ -97,16 +97,40 @@ public class Engine {
 				
 				@Override
 				public void run() {
+					/*
+					 * Simply select the highest value
+					 * from Q
+					 */
+//					//old values
+//					Action a = chooseAction(agent.getState(),Q);
+//					//take a step
+//					StateAndRew stateAndRew = step(agent.getState(), a);
+//					//update Q
+//					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
+//							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState(), Q))
+//									- Q.get(agent.getState(), a));
+//					Q.set(agent.getState(), a, newVal);
+//					agent.setState(stateAndRew.getState());
+					
+					/*
+					 * Select the highest value from
+					 * Q and N
+					 */
 					//old values
-					Action a = chooseAction(agent.getState(),Q);
+					Action a = fFunction(agent.getState());
 					//take a step
 					StateAndRew stateAndRew = step(agent.getState(), a);
+					//increment N
+					N.set(agent.getState(), a, N.get(agent.getState(), a) + 1 );
 					//update Q
 					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
-							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState(), Q))
+							N.get(agent.getState(), a) *
+							(stateAndRew.getReward() + Constants.gamma *
+									Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))
 									- Q.get(agent.getState(), a));
 					Q.set(agent.getState(), a, newVal);
 					agent.setState(stateAndRew.getState());
+					
 					
 					scene.repaint();
 					steps++;
@@ -148,15 +172,35 @@ public class Engine {
 				//in each episodes:
 
 				while(!agent.finished() && steps < Constants.maxSteps){
+//					/*
+//					 * Simply select the highest value
+//					 * from Q
+//					 */
+//					//old values
+//					Action a = chooseAction(agent.getState(), Q);
+//					//take a step
+//					StateAndRew stateAndRew = step(agent.getState(), a);
+//					//update Q
+//					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
+//							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState(), Q))
+//									- Q.get(agent.getState(), a));
+//					Q.set(agent.getState(), a, newVal);
+//					agent.setState(stateAndRew.getState());
 					
+					/*
+					 * Select the highest value from
+					 * Q and N
+					 */
 					//old values
-					Action a = chooseAction(agent.getState(), Q);
+					Action a = fFunction(agent.getState());
 					//take a step
 					StateAndRew stateAndRew = step(agent.getState(), a);
+					//increment N
+					N.set(agent.getState(), a, N.get(agent.getState(), a) + 1 );
 					//update Q
 					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
-							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState(), Q))
-									- Q.get(agent.getState(), a));
+							N.get(agent.getState(), a) * (stateAndRew.getReward() + Constants.gamma *
+									Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))- Q.get(agent.getState(), a));
 					Q.set(agent.getState(), a, newVal);
 					agent.setState(stateAndRew.getState());
 					
@@ -187,22 +231,22 @@ public class Engine {
         demo.setVisible(true);
 	}
 	
-	private Action chooseAction(State s, DoubleMap structure){
+	private Action chooseAction(State s){
 		//simple choose the biggest value
 		//or random if equal
-		double highest = Double.MIN_EXPONENT;
+		double highest = -Double.MAX_VALUE;
 		Map<Action,Double> equals = new HashMap<Action,Double>();
 		
 		//get the highest value
 		//and store actions/values in a structure
 		for(Action a : Action.values()){
-			if(structure.get(s, a) > highest){
-				highest = structure.get(s, a);
+			if(Q.get(s, a) > highest){
+				highest = Q.get(s, a);
 			}
-			equals.put(a, structure.get(s, a));
+			equals.put(a, Q.get(s, a));
 		}
 		//remove smaller than the highest value elements 
-				//from the structure
+		//from the structure
 		Set<Action> set = new HashSet();
 		for(Action a : equals.keySet()){
 			if(equals.get(a) < highest){
@@ -230,12 +274,64 @@ public class Engine {
 			}
 		}
 		return null;
+		
 	}
 	
-//	private Action fFunction(State s){
-//		
-//	}
+	private Action fFunction(State s){
+		double maxValue = -Double.MAX_VALUE;
+		Map<Action,Double> equals = new HashMap<Action,Double>();
+		
+		//get the highest value
+		//and store actions/values in a structure
+		for(Action a: Action.values()){
+			double result;
+			double qValue = Q.get(s, a);
+			double nValue = N.get(s, a);
+			if(qValue < Constants.Ne){
+				result = Constants.Rplus;
+			}
+			else{
+				result = nValue;
+			}
+			equals.put(a, result);
+			
+			if(result > maxValue){
+				maxValue = result;
+			}
+		}
+		//remove smaller than the highest value element
+		//from the structure
+		Set<Action> set = new HashSet();
+		for(Action a : equals.keySet()){
+			if(equals.get(a) < maxValue){
+				set.add(a);
+			}
+		}
+		equals.keySet().removeAll(set);
+		//if multiple elements are left
+		//choose a random one
+		if(equals.size() > 1){
+			Random dirGen = new Random();
+			int randIdx = dirGen.nextInt(100)%equals.size();
+			int i = 0;
+			for(Action a : equals.keySet()){
+				if(i == randIdx){
+					return a;
+				}
+				i++;
+			}
+		}
+		//else the only one is the highest
+		else{
+			for(Action a : equals.keySet()){
+				return a;
+			}
+		}
+		return null;
+		
+	}
 
+	//TODO just for test
 	private void printQ(){
 		for(Action a : Action.values()){
 			for(int i = 0; i < Constants.rows; i++){
