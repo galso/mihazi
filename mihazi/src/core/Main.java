@@ -1,4 +1,5 @@
-package mihazi;
+package core;
+
 
 public class Main {
 

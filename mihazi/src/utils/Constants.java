@@ -1,4 +1,4 @@
-package mihazi;
+package utils;
 
 //Constants for the simulation
 public class Constants {
@@ -41,6 +41,11 @@ public class Constants {
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	};
 	
+	//algorithm parameters
+	public static double alpha = 0.1;
+	public static double gamma = 0.9;
+	
+	//visual parameters
 	public static int gridSize = 30;
 	public static int sceneXOffset = 50;
 	public static int sceneYOffset = 75;

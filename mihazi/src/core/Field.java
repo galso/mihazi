@@ -1,6 +1,10 @@
-package mihazi;
+package core;
 
 import java.awt.Graphics;
+
+import structures.Action;
+import structures.State;
+import utils.Constants;
 
 //represent the simulation field
 public class Field {
@@ -43,27 +47,27 @@ public class Field {
 	}
 	
 	//gives back the next position from the given position and direction
-	public Position getNewPos(Position pos, Direction dir){
+	public State getNewPos(State pos, Action dir){
 		
-		Position retPos = retPos = new Position(pos.getX(), pos.getY());;
-		if(dir == Direction.UP){
+		State retPos = retPos = new State(pos.getX(), pos.getY());;
+		if(dir == Action.UP){
 			if(field[pos.getX()][pos.getY()-1].isAvailable()){
-				retPos = new Position(pos.getX(), pos.getY()-1);
+				retPos = new State(pos.getX(), pos.getY()-1);
 			}
 		}
-		if(dir == Direction.RIGHT){
+		if(dir == Action.RIGHT){
 			if(field[pos.getX()+1][pos.getY()].isAvailable()){
-				retPos = new Position(pos.getX()+1, pos.getY());
+				retPos = new State(pos.getX()+1, pos.getY());
 			}
 		}
-		if(dir == Direction.DOWN){
+		if(dir == Action.DOWN){
 			if(field[pos.getX()][pos.getY()+1].isAvailable()){
-				retPos = new Position(pos.getX(), pos.getY()+1);
+				retPos = new State(pos.getX(), pos.getY()+1);
 			}
 		}
-		if(dir == Direction.LEFT){
+		if(dir == Action.LEFT){
 			if(field[pos.getX()-1][pos.getY()].isAvailable()){
-				retPos = new Position(pos.getX()-1, pos.getY());
+				retPos = new State(pos.getX()-1, pos.getY());
 			}
 		}
 		
@@ -71,7 +75,7 @@ public class Field {
 	}
 	
 	//gives back the reward on the given position
-	public int getReward(Position pos){
+	public int getReward(State pos){
 		return field[pos.getX()][pos.getY()].getReward();
 	}
 	

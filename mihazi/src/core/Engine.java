@@ -1,4 +1,4 @@
-package mihazi;
+package core;
 
 import java.awt.Graphics;
 import java.util.HashMap;
@@ -8,6 +8,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
+
+import structures.Action;
+import structures.DoubleMap;
+import structures.StateAndRew;
+import structures.State;
+import utils.Constants;
+import utils.Util;
 
 //The engine of the simulation
 //This runs the episodes
@@ -22,25 +29,36 @@ public class Engine {
 	private int episodeCount = 0;
 	private int steps = 0;
 	private int episodeReward = 0;
+	private int overallReward = 0;
 	private Map<Integer, Integer> chartData;
+	private Map<Integer, Integer> chartDataOverall;
+	
+	private DoubleMap Q;
+	private DoubleMap N;
 	
 	public Engine(Field _field){
 		field = _field;
 		agent = new Agent();
 		
+		Q = new DoubleMap();
+		N = new DoubleMap();
+		Q.init();
+		N.init();
+		
 		//TODO remove, just for test
-		agent.setDirection(Direction.DOWN);
+		agent.setDirection(Action.DOWN);
+		//
 	}
 
 	
 	//make a single step for the agent
-	private PosAndRew step(Position pos, Direction dir){
+	private StateAndRew step(State pos, Action dir){
 		
 		//TODO remove, just for test
 		System.out.println("startPos: " + pos.getX() + " , " + pos.getY());
 		//
 		
-		Position newPos = null;
+		State newPos = null;
 		
 		Random dirGen = new Random();
 		int intVal = dirGen.nextInt(100);
@@ -64,16 +82,21 @@ public class Engine {
 		
 		agent.setPos(newPos);
 		
-		return new PosAndRew(newPos, field.getReward(newPos));
+		return new StateAndRew(newPos, field.getReward(newPos));
 		
 	}
 	
 	//start measureing
 	public void startEpisodes(double stepTime){
+		
+		//reset/init
 		agent.resetAgent();
 		episodeCount = 0;
 		steps = 0;
+		overallReward = 0;
 		chartData = new HashMap<Integer, Integer>(); 
+		chartDataOverall = new HashMap<Integer, Integer>(); 
+		
 		
 		//visualize simulation
 		if(stepTime != 0){	
@@ -82,15 +105,17 @@ public class Engine {
 				
 				@Override
 				public void run() {
-					PosAndRew paw = step(agent.getPos(), agent.getDirection());
+					StateAndRew saw = step(agent.getState(), agent.getAction());
 					scene.repaint();
 					steps++;
 					frame.setStepCount(steps);
-					agent.addReward(paw.getReward());
+					agent.addReward(saw.getReward());
 					frame.setEpisodeReward(agent.getReward());
 					
 					//if episode is over
 					if(agent.finished() || steps >= Constants.maxSteps){
+						overallReward += agent.getReward();
+						chartDataOverall.put(episodeCount, overallReward);
 						chartData.put(episodeCount, agent.getReward());
 						episodeCount++;
 						frame.setEpisodeCount(episodeCount);
@@ -104,6 +129,7 @@ public class Engine {
 						timer.cancel();
 						timer = null;
 						drawChart(chartData);
+						drawChart(chartDataOverall);
 					}
 					
 				}
@@ -120,20 +146,24 @@ public class Engine {
 
 				while(!agent.finished() && steps < Constants.maxSteps){
 					
-					PosAndRew paw = step(agent.getPos(), agent.getDirection());	
-					agent.addReward(paw.getReward());
+					StateAndRew saw = step(agent.getState(), agent.getAction());	
+					agent.addReward(saw.getReward());
 					
 					//..
 					steps++;
 				}
 				
+				overallReward += agent.getReward();
+				chartDataOverall.put(episodeCount, overallReward);
 				chartData.put(episodeCount, agent.getReward());
-				agent.resetAgent();
 				
+				steps = 0;
+				agent.resetAgent();
 				episodeCount++;
 			}
 			
 			drawChart(chartData);
+			drawChart(chartDataOverall);
 		}
 
 	}

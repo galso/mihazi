@@ -1,4 +1,4 @@
-package mihazi;
+package core;
 
 import java.awt.Graphics;
 

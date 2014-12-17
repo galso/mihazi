@@ -1,9 +1,11 @@
-package mihazi;
+package core;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
+
+import utils.Constants;
 
 //represent a grid on the field
 public class Grid extends JPanel{

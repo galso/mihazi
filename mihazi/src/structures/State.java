@@ -1,12 +1,12 @@
-package mihazi;
+package structures;
 
 //represent az X,Y coordination
-public class Position {
+public class State {
 
 	private int posX;
 	private int posY;
 	
-	public Position(int x, int y){
+	public State(int x, int y){
 		posX = x;
 		posY = y;
 	}

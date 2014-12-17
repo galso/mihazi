@@ -1,24 +1,28 @@
-package mihazi;
+package core;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import structures.Action;
+import structures.State;
+import utils.Constants;
+
 public class Agent{
 
 	private int reward;
-	private Direction direction;
-	private Position pos;
+	private Action direction;
+	private State pos;
 	private boolean goalReached;
 	
 	public Agent(){
 		reward = 0;
-		pos = new Position(Constants.startX, Constants.startY);
+		pos = new State(Constants.startX, Constants.startY);
 		goalReached = false;
 	}
 	
-	public Position getPos(){
+	public State getState(){
 		return pos;
 	}
 	
@@ -26,7 +30,7 @@ public class Agent{
 		return reward;
 	}
 	
-	public Direction getDirection(){
+	public Action getAction(){
 		return direction;
 	}
 	
@@ -34,7 +38,7 @@ public class Agent{
 		return goalReached;
 	}
 	
-	public void setPos(Position _pos){
+	public void setPos(State _pos){
 		pos = _pos;
 	}
 	
@@ -45,13 +49,13 @@ public class Agent{
 		reward += _reward;
 	}
 	
-	public void setDirection(Direction _direction){
+	public void setDirection(Action _direction){
 		direction = _direction;
 	}
 	
 	public void resetAgent(){
 		reward = 0;
-		pos = new Position(Constants.startX, Constants.startY);
+		pos = new State(Constants.startX, Constants.startY);
 		goalReached = false;
 	}
 	
