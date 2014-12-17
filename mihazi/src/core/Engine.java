@@ -98,12 +98,12 @@ public class Engine {
 				@Override
 				public void run() {
 					//old values
-					Action a = chooseAction(agent.getState());
+					Action a = chooseAction(agent.getState(),Q);
 					//take a step
 					StateAndRew stateAndRew = step(agent.getState(), a);
 					//update Q
 					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
-							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))
+							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState(), Q))
 									- Q.get(agent.getState(), a));
 					Q.set(agent.getState(), a, newVal);
 					agent.setState(stateAndRew.getState());
@@ -132,8 +132,8 @@ public class Engine {
 					if(episodeCount >= Constants.episodes){
 						timer.cancel();
 						timer = null;
-						drawChart(chartData);
-						drawChart(chartDataOverall);
+						drawChart("Learning curve", "Reward/episodes", chartData);
+						drawChart("Overall learning curve", "All reward/episodes", chartDataOverall);
 					}
 					
 				}
@@ -145,24 +145,21 @@ public class Engine {
 			while(episodeCount < Constants.episodes){
 				
 				agent.resetAgent();
-				//...
 				//in each episodes:
 
 				while(!agent.finished() && steps < Constants.maxSteps){
 					
 					//old values
-					Action a = chooseAction(agent.getState());
+					Action a = chooseAction(agent.getState(), Q);
 					//take a step
 					StateAndRew stateAndRew = step(agent.getState(), a);
 					//update Q
 					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
-							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))
+							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState(), Q))
 									- Q.get(agent.getState(), a));
 					Q.set(agent.getState(), a, newVal);
 					agent.setState(stateAndRew.getState());
 					
-					
-//					StateAndRew saw = step(agent.getState(), agent.getAction());	
 					agent.addReward(stateAndRew.getReward());
 					
 					//..
@@ -178,19 +175,19 @@ public class Engine {
 				episodeCount++;
 			}
 			
-			drawChart(chartData);
-			drawChart(chartDataOverall);
+			drawChart("Learning curve", "Reward/episodes", chartData);
+			drawChart("Overall learning curve", "All reward/episodes", chartDataOverall);
 		}
 
 	}
 	
-	private void drawChart(Map<Integer,Integer> map){
-		final LineChart demo = new LineChart("Learning curve", "Learning curve", map);
+	private void drawChart(String charTitle, String lineDesc, Map<Integer,Integer> map){
+		final LineChart demo = new LineChart("Learning curve", charTitle, lineDesc, map);
 		demo.pack();
         demo.setVisible(true);
 	}
 	
-	private Action chooseAction(State s){
+	private Action chooseAction(State s, DoubleMap structure){
 		//simple choose the biggest value
 		//or random if equal
 		double highest = Double.MIN_EXPONENT;
@@ -199,17 +196,16 @@ public class Engine {
 		//get the highest value
 		//and store actions/values in a structure
 		for(Action a : Action.values()){
-			if(Q.get(s, a) > highest){
-				highest = Q.get(s, a);
+			if(structure.get(s, a) > highest){
+				highest = structure.get(s, a);
 			}
-			equals.put(a, Q.get(s, a));
+			equals.put(a, structure.get(s, a));
 		}
-		//remove lower value elements from the structure
-		//than the highest value
+		//remove smaller than the highest value elements 
+				//from the structure
 		Set<Action> set = new HashSet();
 		for(Action a : equals.keySet()){
 			if(equals.get(a) < highest){
-//				equals.remove(a);
 				set.add(a);
 			}
 		}
@@ -236,17 +232,10 @@ public class Engine {
 		return null;
 	}
 	
-//	private Action maxValuableAction(State s){
-//
-//		double maxValue = Double.MIN_NORMAL;
-//		for(Action a : Action.values()){
-//			if(Q.get(s, a) > maxValue){
-//				maxValue = Q.get(s, a);
-//				maxValueAction = a;
-//			}
-//		}
+//	private Action fFunction(State s){
+//		
 //	}
-	
+
 	private void printQ(){
 		for(Action a : Action.values()){
 			for(int i = 0; i < Constants.rows; i++){

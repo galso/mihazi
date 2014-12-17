@@ -44,6 +44,8 @@ public class Constants {
 	//algorithm parameters
 	public static double alpha = 0.1;
 	public static double gamma = 0.9;
+	public static double Rplus = 2;
+	public static double Ne = 5;
 	
 	//visual parameters
 	public static int gridSize = 30;

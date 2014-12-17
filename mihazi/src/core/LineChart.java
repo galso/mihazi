@@ -22,8 +22,11 @@ import org.jfree.util.Rotation;
 
 public class LineChart extends JFrame{
 	
-	public LineChart(String applicationTitle, String chartTitle, Map<Integer, Integer> map) {
+	private String lineDesc;
+	
+	public LineChart(String applicationTitle, String chartTitle, String _lineDesc, Map<Integer, Integer> map) {
         super(applicationTitle);
+        lineDesc = _lineDesc;
         // This will create the dataset 
         XYDataset dataset = createDataset(map);
         // based on the dataset we create the chart
@@ -38,7 +41,7 @@ public class LineChart extends JFrame{
     }
 	
 	private  XYDataset createDataset(Map<Integer, Integer> map) {
-		final XYSeries result = new XYSeries("Reward/episodes");
+		final XYSeries result = new XYSeries(lineDesc);
 		for(Integer i : map.keySet()){
 			result.add(i, map.get(i));
 		}
