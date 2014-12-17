@@ -27,19 +27,4 @@ public class Scene extends JPanel{
 		agent = _agent;
 	}
 	
-//	@Override
-//	public void paintComponent(Graphics g){
-//		field.draw(g);
-//		System.out.println("rajz");
-//	}
-	
-//	public Graphics draw(){
-//		this.revalidate();
-//		System.out.println("repaint");
-//		repaint();
-//		Graphics g;
-//		g = getGraphics();
-//		field.draw(g);
-//		return g;
-//	}
 }

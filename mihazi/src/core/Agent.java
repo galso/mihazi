@@ -60,7 +60,6 @@ public class Agent{
 	}
 	
 	public void draw(Graphics g){
-//		System.out.println("agent paint");
 		g.setColor(Color.BLUE);
 		g.fillOval(pos.getX()*Constants.gridSize+Constants.sceneXOffset, pos.getY()*Constants.gridSize+Constants.sceneYOffset, Constants.gridSize, Constants.gridSize);
 	}

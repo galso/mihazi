@@ -45,7 +45,6 @@ public class Grid extends JPanel{
 			g.fillRect(x, y, Constants.gridSize, Constants.gridSize);
 		}
 		
-//		System.out.println("grid rajz");
 	}
 	
 }

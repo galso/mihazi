@@ -28,7 +28,7 @@ public class Field {
 					break;
 				case 1:
 					//wall
-					//??negative reward if cant move??
+					//negative reward if cant move
 					field[j][i] = new Grid(false, Constants.stepReward);
 					break;
 				case 2:
