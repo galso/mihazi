@@ -1,9 +1,14 @@
 package core;
 
 import java.awt.Graphics;
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,21 +47,12 @@ public class Engine {
 		
 		Q = new DoubleMap();
 		N = new DoubleMap();
-		Q.init();
-		N.init();
 		
-		//TODO remove, just for test
-		agent.setDirection(Action.DOWN);
-		//
 	}
 
 	
 	//make a single step for the agent
 	private StateAndRew step(State pos, Action dir){
-		
-		//TODO remove, just for test
-		System.out.println("startPos: " + pos.getX() + " , " + pos.getY());
-		//
 		
 		State newPos = null;
 		
@@ -76,12 +72,6 @@ public class Engine {
 			newPos = field.getNewPos(pos, Util.getNextDir(dir));
 		}
 		
-		//TODO remove, just for test
-		System.out.println("endPos: " + newPos.getX() + " , " + newPos.getY());
-		//
-		
-		agent.setPos(newPos);
-		
 		return new StateAndRew(newPos, field.getReward(newPos));
 		
 	}
@@ -94,6 +84,8 @@ public class Engine {
 		episodeCount = 0;
 		steps = 0;
 		overallReward = 0;
+		Q.init();
+		N.init();
 		chartData = new HashMap<Integer, Integer>(); 
 		chartDataOverall = new HashMap<Integer, Integer>(); 
 		
@@ -105,11 +97,21 @@ public class Engine {
 				
 				@Override
 				public void run() {
-					StateAndRew saw = step(agent.getState(), agent.getAction());
+					//old values
+					Action a = chooseAction(agent.getState());
+					//take a step
+					StateAndRew stateAndRew = step(agent.getState(), a);
+					//update Q
+					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
+							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))
+									- Q.get(agent.getState(), a));
+					Q.set(agent.getState(), a, newVal);
+					agent.setState(stateAndRew.getState());
+					
 					scene.repaint();
 					steps++;
 					frame.setStepCount(steps);
-					agent.addReward(saw.getReward());
+					agent.addReward(stateAndRew.getReward());
 					frame.setEpisodeReward(agent.getReward());
 					
 					//if episode is over
@@ -123,6 +125,8 @@ public class Engine {
 						frame.setStepCount(steps);
 						frame.setEpisodeReward(agent.getReward());
 						agent.resetAgent();
+						
+						printQ();
 					}
 					//if simulation is over
 					if(episodeCount >= Constants.episodes){
@@ -146,8 +150,20 @@ public class Engine {
 
 				while(!agent.finished() && steps < Constants.maxSteps){
 					
-					StateAndRew saw = step(agent.getState(), agent.getAction());	
-					agent.addReward(saw.getReward());
+					//old values
+					Action a = chooseAction(agent.getState());
+					//take a step
+					StateAndRew stateAndRew = step(agent.getState(), a);
+					//update Q
+					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
+							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))
+									- Q.get(agent.getState(), a));
+					Q.set(agent.getState(), a, newVal);
+					agent.setState(stateAndRew.getState());
+					
+					
+//					StateAndRew saw = step(agent.getState(), agent.getAction());	
+					agent.addReward(stateAndRew.getReward());
 					
 					//..
 					steps++;
@@ -172,6 +188,76 @@ public class Engine {
 		final LineChart demo = new LineChart("Learning curve", "Learning curve", map);
 		demo.pack();
         demo.setVisible(true);
+	}
+	
+	private Action chooseAction(State s){
+		//simple choose the biggest value
+		//or random if equal
+		double highest = Double.MIN_EXPONENT;
+		Map<Action,Double> equals = new HashMap<Action,Double>();
+		
+		//get the highest value
+		//and store actions/values in a structure
+		for(Action a : Action.values()){
+			if(Q.get(s, a) > highest){
+				highest = Q.get(s, a);
+			}
+			equals.put(a, Q.get(s, a));
+		}
+		//remove lower value elements from the structure
+		//than the highest value
+		Set<Action> set = new HashSet();
+		for(Action a : equals.keySet()){
+			if(equals.get(a) < highest){
+//				equals.remove(a);
+				set.add(a);
+			}
+		}
+		equals.keySet().removeAll(set);
+		//if multiple elements are left
+		//choose a random one
+		if(equals.size() > 1){
+			Random dirGen = new Random();
+			int randIdx = dirGen.nextInt(100)%equals.size();
+			int i = 0;
+			for(Action a : equals.keySet()){
+				if(i == randIdx){
+					return a;
+				}
+				i++;
+			}
+		}
+		//else the only one is the highest
+		else{
+			for(Action a : equals.keySet()){
+				return a;
+			}
+		}
+		return null;
+	}
+	
+//	private Action maxValuableAction(State s){
+//
+//		double maxValue = Double.MIN_NORMAL;
+//		for(Action a : Action.values()){
+//			if(Q.get(s, a) > maxValue){
+//				maxValue = Q.get(s, a);
+//				maxValueAction = a;
+//			}
+//		}
+//	}
+	
+	private void printQ(){
+		for(Action a : Action.values()){
+			for(int i = 0; i < Constants.rows; i++){
+				for(int j = 0; j < Constants.cols; j++){
+					System.out.print(Q.get(new State(i,j), a));
+				}
+				System.out.print("\n");
+			}
+			System.out.println("");
+		}
+		
 	}
 
 	public Agent getAgent(){

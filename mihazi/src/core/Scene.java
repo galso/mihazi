@@ -20,7 +20,7 @@ public class Scene extends JPanel{
 		super.paint(g);
 		field.draw(g);
 		agent.draw(g);
-		System.out.println("rajz");
+//		System.out.println("rajz");
 	}
 	
 	public void setAgent(Agent _agent){

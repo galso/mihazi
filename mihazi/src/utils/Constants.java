@@ -4,10 +4,10 @@ package utils;
 public class Constants {
 
 	//number of episodes
-	public static int episodes = 3;
+	public static int episodes = 50;
 	
 	//max steps per episode
-	public static int maxSteps = 10;
+	public static int maxSteps = 1000;
 	
 	//agent start position
 	public static int startX = 1;
@@ -15,7 +15,7 @@ public class Constants {
 	
 	//rewards
 	public static int stepReward = -1;
-	public static int goalReward = 500;
+	public static int goalReward = 100;
 	public static int bombReward = -100;
 	
 	//probabilities for the steps
@@ -31,13 +31,13 @@ public class Constants {
 		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		1, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 1,
 		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-		1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-		1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1,
+		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
 		1, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 1,
-		1, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 1,
-		1, 0, 0, 0, 0, 0, 2, 0, 1, 1, 0, 1,
-		1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,
-		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
+		1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1,
+		1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		1, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	};
 	

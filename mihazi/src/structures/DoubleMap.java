@@ -7,33 +7,34 @@ import utils.Constants;
 
 public class DoubleMap {
 	
-	private Map<State,Map<Action,Integer>> doubleMap;
+	private Map<String,Map<Action,Double>> doubleMap;
 	
 	public DoubleMap(){
-		doubleMap = new HashMap<State,Map<Action,Integer>>();
+		doubleMap = new HashMap<String,Map<Action,Double>>();
 	}
 	
-	public Integer get(State s, Action a){
-		return doubleMap.get(s).get(a);
+	public double get(State s, Action a){
+		return doubleMap.get(""+s.getX()+s.getY()).get(a);
 	}
 	
-	public void set(State s, Action a, int i){
-		Map<Action,Integer> innerMap = doubleMap.get(s);
-		innerMap.put(a, i);
-		doubleMap.put(s, innerMap);
+	public void set(State s, Action a, double d){
+		Map<Action,Double> innerMap = doubleMap.get(""+s.getX()+s.getY());
+		innerMap.put(a, d);
+		doubleMap.put(""+s.getX()+s.getY(), innerMap);
 	}
 	
 	public void init(){
 		for(int i = 0; i < Constants.rows; i++){
 			for(int j = 0; j < Constants.cols; j++){
 				State s = new State(i,j);
-				Map<Action, Integer> inner = new HashMap<Action, Integer>();
-				inner.put(Action.UP, 0);
-				inner.put(Action.RIGHT, 0);
-				inner.put(Action.DOWN, 0);
-				inner.put(Action.LEFT, 0);
-				doubleMap.put(s, inner);
+				Map<Action, Double> inner = new HashMap<Action, Double>();
+				inner.put(Action.UP, 0.0);
+				inner.put(Action.RIGHT, 0.0);
+				inner.put(Action.DOWN, 0.0);
+				inner.put(Action.LEFT, 0.0);
+				doubleMap.put(""+s.getX()+s.getY(), inner);
 			}
 		}
 	}
+	
 }

@@ -26,4 +26,5 @@ public class State {
 	public void setY(int y){
 		posY = y;
 	}
+	
 }

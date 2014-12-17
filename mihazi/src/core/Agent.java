@@ -38,7 +38,7 @@ public class Agent{
 		return goalReached;
 	}
 	
-	public void setPos(State _pos){
+	public void setState(State _pos){
 		pos = _pos;
 	}
 	
@@ -60,7 +60,7 @@ public class Agent{
 	}
 	
 	public void draw(Graphics g){
-		System.out.println("agent paint");
+//		System.out.println("agent paint");
 		g.setColor(Color.BLUE);
 		g.fillOval(pos.getX()*Constants.gridSize+Constants.sceneXOffset, pos.getY()*Constants.gridSize+Constants.sceneYOffset, Constants.gridSize, Constants.gridSize);
 	}
