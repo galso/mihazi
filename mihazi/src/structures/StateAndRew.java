@@ -5,9 +5,9 @@ package structures;
 public class StateAndRew {
 
 	private State pos;
-	private int reward;
+	private double reward;
 	
-	public StateAndRew(State _pos, int _reward){
+	public StateAndRew(State _pos, double _reward){
 		pos = _pos;
 		reward = _reward;
 	}
@@ -16,7 +16,7 @@ public class StateAndRew {
 		return pos;
 	}
 	
-	public int getReward(){
+	public double getReward(){
 		return reward;
 	}
 }

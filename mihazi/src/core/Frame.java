@@ -97,7 +97,7 @@ public class Frame extends JFrame{
 		stepCountLabel.setText("Steps: "+count);
 	}
 	
-	public void setEpisodeReward(int count){
+	public void setEpisodeReward(double count){
 		episodeRewardLabel.setText("Episode reward: "+count);
 	}
 

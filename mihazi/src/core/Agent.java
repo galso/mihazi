@@ -11,7 +11,7 @@ import utils.Constants;
 
 public class Agent{
 
-	private int reward;
+	private double reward;
 	private Action direction;
 	private State pos;
 	private boolean goalReached;
@@ -26,7 +26,7 @@ public class Agent{
 		return pos;
 	}
 	
-	public int getReward(){
+	public double getReward(){
 		return reward;
 	}
 	
@@ -42,7 +42,7 @@ public class Agent{
 		pos = _pos;
 	}
 	
-	public void addReward(int _reward){
+	public void addReward(double _reward){
 		if(_reward == Constants.goalReward){
 			goalReached = true;
 		}

@@ -24,7 +24,7 @@ public class LineChart extends JFrame{
 	
 	private String lineDesc;
 	
-	public LineChart(String applicationTitle, String chartTitle, String _lineDesc, Map<Integer, Integer> map) {
+	public LineChart(String applicationTitle, String chartTitle, String _lineDesc, Map<Integer, Double> map) {
         super(applicationTitle);
         lineDesc = _lineDesc;
         // This will create the dataset 
@@ -40,7 +40,7 @@ public class LineChart extends JFrame{
 
     }
 	
-	private  XYDataset createDataset(Map<Integer, Integer> map) {
+	private  XYDataset createDataset(Map<Integer, Double> map) {
 		final XYSeries result = new XYSeries(lineDesc);
 		for(Integer i : map.keySet()){
 			result.add(i, map.get(i));

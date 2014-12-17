@@ -7,15 +7,15 @@ public class Constants {
 	public static int episodes = 100;
 	
 	//max steps per episode
-	public static int maxSteps = 1000;
+	public static int maxSteps = 100;
 	
 	//agent start position
 	public static int startX = 1;
 	public static int startY = 1;
 	
 	//rewards
-	public static int stepReward = -1;
-	public static int goalReward = 100;
+	public static double stepReward = -0.04;
+	public static int goalReward = 20;
 	public static int bombReward = -100;
 	
 	//probabilities for the steps

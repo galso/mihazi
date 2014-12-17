@@ -75,7 +75,7 @@ public class Field {
 	}
 	
 	//gives back the reward on the given position
-	public int getReward(State pos){
+	public double getReward(State pos){
 		return field[pos.getX()][pos.getY()].getReward();
 	}
 	

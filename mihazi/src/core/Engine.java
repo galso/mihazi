@@ -34,9 +34,9 @@ public class Engine {
 	private int episodeCount = 0;
 	private int steps = 0;
 	private int episodeReward = 0;
-	private int overallReward = 0;
-	private Map<Integer, Integer> chartData;
-	private Map<Integer, Integer> chartDataOverall;
+	private double overallReward = 0;
+	private Map<Integer, Double> chartData;
+	private Map<Integer, Double> chartDataOverall;
 	
 	private DoubleMap Q;
 	private DoubleMap N;
@@ -86,8 +86,8 @@ public class Engine {
 		overallReward = 0;
 		Q.init();
 		N.init();
-		chartData = new HashMap<Integer, Integer>(); 
-		chartDataOverall = new HashMap<Integer, Integer>(); 
+		chartData = new HashMap<Integer, Double>(); 
+		chartDataOverall = new HashMap<Integer, Double>(); 
 		
 		
 		//visualize simulation
@@ -101,35 +101,35 @@ public class Engine {
 					 * Simply select the highest value
 					 * from Q
 					 */
-//					//old values
-//					Action a = chooseAction(agent.getState(),Q);
-//					//take a step
-//					StateAndRew stateAndRew = step(agent.getState(), a);
-//					//update Q
-//					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
-//							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState(), Q))
-//									- Q.get(agent.getState(), a));
-//					Q.set(agent.getState(), a, newVal);
-//					agent.setState(stateAndRew.getState());
-					
-					/*
-					 * Select the highest value from
-					 * Q and N
-					 */
 					//old values
-					Action a = fFunction(agent.getState());
+					Action a = chooseAction(agent.getState());
 					//take a step
 					StateAndRew stateAndRew = step(agent.getState(), a);
-					//increment N
-					N.set(agent.getState(), a, N.get(agent.getState(), a) + 1 );
 					//update Q
 					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
-							N.get(agent.getState(), a) *
-							(stateAndRew.getReward() + Constants.gamma *
-									Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))
+							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))
 									- Q.get(agent.getState(), a));
 					Q.set(agent.getState(), a, newVal);
 					agent.setState(stateAndRew.getState());
+					
+//					/*
+//					 * Select the highest value from
+//					 * Q and N
+//					 */
+//					//old values
+//					Action a = fFunction(agent.getState());
+//					//take a step
+//					StateAndRew stateAndRew = step(agent.getState(), a);
+//					//increment N
+//					N.set(agent.getState(), a, N.get(agent.getState(), a) + 1 );
+//					//update Q
+//					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
+//							N.get(agent.getState(), a) *
+//							(stateAndRew.getReward() + Constants.gamma *
+//									Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))
+//									- Q.get(agent.getState(), a));
+//					Q.set(agent.getState(), a, newVal);
+//					agent.setState(stateAndRew.getState());
 					
 					
 					scene.repaint();
@@ -150,7 +150,7 @@ public class Engine {
 						frame.setEpisodeReward(agent.getReward());
 						agent.resetAgent();
 						
-						printQ();
+//						printQ();
 					}
 					//if simulation is over
 					if(episodeCount >= Constants.episodes){
@@ -177,15 +177,18 @@ public class Engine {
 //					 * from Q
 //					 */
 //					//old values
-//					Action a = chooseAction(agent.getState(), Q);
+//					Action a = chooseAction(agent.getState());
 //					//take a step
 //					StateAndRew stateAndRew = step(agent.getState(), a);
 //					//update Q
 //					double newVal = Q.get(agent.getState(), a) + Constants.alpha *
-//							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState(), Q))
+//							(stateAndRew.getReward() + Constants.gamma * Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))
 //									- Q.get(agent.getState(), a));
 //					Q.set(agent.getState(), a, newVal);
 //					agent.setState(stateAndRew.getState());
+//					agent.addReward(stateAndRew.getReward());
+//					
+//					printQ();
 					
 					/*
 					 * Select the highest value from
@@ -203,9 +206,9 @@ public class Engine {
 									Q.get(stateAndRew.getState(), chooseAction(stateAndRew.getState()))- Q.get(agent.getState(), a));
 					Q.set(agent.getState(), a, newVal);
 					agent.setState(stateAndRew.getState());
-					
 					agent.addReward(stateAndRew.getReward());
 					
+//					printQ();
 					//..
 					steps++;
 				}
@@ -225,7 +228,7 @@ public class Engine {
 
 	}
 	
-	private void drawChart(String charTitle, String lineDesc, Map<Integer,Integer> map){
+	private void drawChart(String charTitle, String lineDesc, Map<Integer,Double> map){
 		final LineChart demo = new LineChart("Learning curve", charTitle, lineDesc, map);
 		demo.pack();
         demo.setVisible(true);

@@ -11,10 +11,10 @@ import utils.Constants;
 public class Grid extends JPanel{
 
 	private boolean available;
-	private int reward;
+	private double reward;
 	
 	
-	public Grid(boolean _available, int _reward){
+	public Grid(boolean _available, double _reward){
 		available = _available;
 		reward = _reward;
 	}
@@ -23,7 +23,7 @@ public class Grid extends JPanel{
 		return available;
 	}
 	
-	public int getReward(){
+	public double getReward(){
 		return reward;
 	}
 	
